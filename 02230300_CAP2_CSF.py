@@ -19,16 +19,16 @@ class JumbleWordGame:
         # Set up the levels
         self.levels = [
             {"words": ["apple"], "time_limit": 10},
-            {"words": ["dog", "cat", "bird"], "time_limit": 8},
-            {"words": ["python", "java", "javascript"], "time_limit": 5},
-            {"words": ["car", "bus", "train"], "time_limit": 7},
-            {"words": ["red", "green", "blue"], "time_limit": 6},
-            {"words": ["book", "pen", "pencil"], "time_limit": 8},
-            {"words": ["house", "building", "apartment"], "time_limit": 10},
-            {"words": ["happy", "sad", "angry"], "time_limit": 7},
-            {"words": ["sun", "moon", "star"], "time_limit": 6},
-            {"words": ["water", "juice", "soda"], "time_limit": 8},
-            {"words": ["football", "basketball", "tennis"], "time_limit": 9},
+            {"words": ["dog", "cat", "bird"], "time_limit": 12},
+            {"words": ["python", "java", "javascript"], "time_limit": 12},
+            {"words": ["car", "bus", "train"], "time_limit": 12},
+            {"words": ["red", "green", "blue"], "time_limit": 12},
+            {"words": ["book", "pen", "pencil"], "time_limit": 12},
+            {"words": ["house", "building", "apartment"], "time_limit": 12},
+            {"words": ["happy", "sad", "angry"], "time_limit": 12},
+            {"words": ["sun", "moon", "star"], "time_limit": 12},
+            {"words": ["water", "juice", "soda"], "time_limit": 12},
+            {"words": ["football", "basketball", "tennis"], "time_limit": 12},
         ]
 
         # Initialize player's score and current level
@@ -39,6 +39,7 @@ class JumbleWordGame:
         # Main game loop
         running = True
         while running:
+            pygame.display.update()
             # Set up the current level
             current_level = self.levels[self.current_level_index]
             words = current_level["words"]
@@ -140,27 +141,21 @@ class JumbleWordGame:
                             elif event.type == pygame.MOUSEBUTTONDOWN:
                                 mouse_pos = pygame.mouse.get_pos()
                                 if play_again_text.get_rect(center=(self.WINDOW_WIDTH // 2, self.WINDOW_HEIGHT // 2 - play_again_text.get_height() // 2)).collidepoint(mouse_pos):
+                                    print('Play again called')
                                     waiting = False
                                     self.current_level_index = 0
                                     self.score = 0
                                 elif quit_text.get_rect(center=(self.WINDOW_WIDTH // 2, self.WINDOW_HEIGHT // 2 + quit_text.get_height() // 2)).collidepoint(mouse_pos):
+                                    print('quit called')
                                     waiting = False
                                     running = False
-
+                                    pygame.quit()
+                                    sys.exit()
+                                    
                     # Reset the current level to 1 if time is up
                     self.current_level_index = 0
                     self.score = 0
                     input_word = ""
-
-        # End of game loop
-        final_score_text = self.font.render(f"Final Score: {self.score}", True, (255, 255, 255))
-        self.game_window.blit(final_score_text, (self.WINDOW_WIDTH // 2 - final_score_text.get_width() // 2, self.WINDOW_HEIGHT // 2 - final_score_text.get_height() // 2))
-        pygame.display.update()
-
-        # Wait for a few seconds before quitting
-        pygame.time.wait(3000)
-        pygame.quit()
-        sys.exit()
 
 # Create an instance of the game and run it
 game = JumbleWordGame()
