@@ -1,10 +1,20 @@
 import unittest
-from CSF_02230300_CAP2 import JumbleWordGame
+import pygame
+from pygame.locals import KEYDOWN, K_RETURN
+from unittest.mock import patch
+from CSF_02230300_CAP2 import JumbleWordGame 
+import sys
 
-class JumbleWordGameTest(unittest.TestCase):
-    def setUp(self):
-        self.game = JumbleWordGame()
+class CustomTestResult(unittest.TextTestResult):
+    def addSuccess(self, test):
+        super().addSuccess(test)
+        print(f"Pass: {test}")
 
+    def addFailure(self, test, err):
+        super().addFailure(test, err)
+        print(f"Fail: {test}")
+
+class JumbleWordGameTests(unittest.TestCase):
     def test_jumble_word(self):
         word = "apple"
         jumbled_word = self.game.jumble_word(word)
@@ -50,10 +60,9 @@ class JumbleWordGameTest(unittest.TestCase):
         initial_time_left = self.game.time_left
         self.game.decrement_time(5)
         self.assertEqual(self.game.time_left, initial_time_left - 5)
-
-    def tearDown(self):
-        self.game = None
-
+        
 if __name__ == '__main__':
-    unittest.main()
-
+    suite = unittest.TestLoader().loadTestsFromTestCase(JumbleWordGameTests)
+    result = CustomTestResult(stream=sys.stdout, descriptions=True, verbosity=2)
+    runner = unittest.TextTestRunner(resultclass=CustomTestResult)
+    runner.run(suite)
